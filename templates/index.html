@@ -3,350 +3,632 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Custom API System</title>
+    <title>API System</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <style>
-        body {
-            font-family: Arial, sans-serif;
-            line-height: 1.6;
-            max-width: 800px;
-            margin: 0 auto;
-            padding: 20px;
-            color: #333;
+        :root {
+            --primary-color: #3f51b5;
+            --secondary-color: #7986cb;
+            --accent-color: #ff4081;
+            --dark-color: #1a237e;
+            --light-color: #f5f5f5;
+            --success-color: #4caf50;
+            --warning-color: #ff9800;
+            --danger-color: #f44336;
+            --gray-100: #f8f9fa;
+            --gray-200: #e9ecef;
+            --gray-300: #dee2e6;
+            --gray-400: #ced4da;
+            --gray-500: #adb5bd;
+            --gray-600: #6c757d;
+            --gray-700: #495057;
+            --gray-800: #343a40;
+            --gray-900: #212529;
         }
-        h1, h2 {
-            color: #2c3e50;
-        }
-        .container {
-            background-color: #f9f9f9;
-            border-radius: 5px;
-            padding: 20px;
-            margin-bottom: 20px;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-        }
-        .form-group {
-            margin-bottom: 15px;
-        }
-        label {
-            display: block;
-            margin-bottom: 5px;
-            font-weight: bold;
-        }
-        input, textarea, select {
-            width: 100%;
-            padding: 8px;
-            border: 1px solid #ddd;
-            border-radius: 4px;
+
+        * {
+            margin: 0;
+            padding: 0;
             box-sizing: border-box;
         }
-        button {
-            background-color: #3498db;
-            color: white;
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: #f8f9fa;
+            color: var(--gray-800);
+            line-height: 1.6;
+        }
+
+        .navbar {
+            background-color: var(--primary-color);
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .navbar-brand {
+            font-weight: 700;
+            color: white !important;
+        }
+
+        .nav-link {
+            color: rgba(255, 255, 255, 0.85) !important;
+            font-weight: 500;
+            transition: all 0.3s ease;
+        }
+
+        .nav-link:hover {
+            color: white !important;
+        }
+
+        .navbar .dropdown-menu {
             border: none;
-            padding: 10px 15px;
-            border-radius: 4px;
-            cursor: pointer;
-            font-size: 16px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
         }
-        button:hover {
-            background-color: #2980b9;
+
+        .navbar .dropdown-item:hover {
+            background-color: var(--secondary-color);
+            color: white;
         }
+
+        .hero-section {
+            background: linear-gradient(135deg, var(--primary-color), var(--dark-color));
+            color: white;
+            padding: 3rem 0;
+            margin-bottom: 2rem;
+        }
+
+        .hero-title {
+            font-weight: 700;
+            margin-bottom: 1rem;
+        }
+
+        .hero-subtitle {
+            font-weight: 300;
+            margin-bottom: 2rem;
+        }
+
+        .card {
+            border: none;
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            margin-bottom: 1.5rem;
+        }
+
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+        }
+
+        .card-header {
+            background-color: white;
+            border-bottom: 1px solid var(--gray-200);
+            font-weight: 600;
+            padding: 1rem 1.5rem;
+        }
+
+        .card-body {
+            padding: 1.5rem;
+        }
+
+        .form-label {
+            font-weight: 500;
+            color: var(--gray-700);
+        }
+
+        .form-control {
+            border-radius: 5px;
+            border: 1px solid var(--gray-300);
+            padding: 0.75rem 1rem;
+            font-size: 0.95rem;
+            transition: all 0.3s ease;
+        }
+
+        .form-control:focus {
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 0.2rem rgba(63, 81, 181, 0.25);
+        }
+
+        .btn {
+            border-radius: 5px;
+            padding: 0.5rem 1.5rem;
+            font-weight: 500;
+            transition: all 0.3s ease;
+        }
+
+        .btn-primary {
+            background-color: var(--primary-color);
+            border-color: var(--primary-color);
+        }
+
+        .btn-primary:hover {
+            background-color: var(--dark-color);
+            border-color: var(--dark-color);
+        }
+
+        .btn-outline-primary {
+            color: var(--primary-color);
+            border-color: var(--primary-color);
+        }
+
+        .btn-outline-primary:hover {
+            background-color: var(--primary-color);
+            color: white;
+        }
+
+        .response-container {
+            background-color: white;
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+            padding: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
         #response {
-            background-color: #f0f0f0;
-            padding: 15px;
-            border-radius: 4px;
+            background-color: var(--gray-100);
+            border-radius: 5px;
+            padding: 1rem;
+            font-family: monospace;
             white-space: pre-wrap;
-            overflow-x: auto;
+            max-height: 300px;
+            overflow-y: auto;
         }
-        .tab {
-            overflow: hidden;
-            border: 1px solid #ccc;
-            background-color: #f1f1f1;
-            border-radius: 4px 4px 0 0;
+
+        .nav-tabs {
+            border-bottom: 1px solid var(--gray-300);
+            margin-bottom: 1.5rem;
         }
-        .tab button {
-            background-color: inherit;
-            float: left;
+
+        .nav-tabs .nav-link {
+            color: var(--gray-600) !important;
             border: none;
-            outline: none;
-            cursor: pointer;
-            padding: 14px 16px;
-            transition: 0.3s;
-            color: #333;
+            border-bottom: 3px solid transparent;
+            font-weight: 500;
+            padding: 0.75rem 1.5rem;
+            transition: all 0.3s ease;
         }
-        .tab button:hover {
-            background-color: #ddd;
+
+        .nav-tabs .nav-link.active {
+            color: var(--primary-color) !important;
+            border-bottom-color: var(--primary-color);
+            background-color: transparent;
         }
-        .tab button.active {
-            background-color: #3498db;
+
+        .nav-tabs .nav-link:hover {
+            color: var(--primary-color) !important;
+            border-bottom-color: var(--gray-300);
+        }
+
+        .custom-field-container {
+            background-color: var(--gray-100);
+            border-radius: 5px;
+            padding: 1rem;
+            margin-bottom: 1rem;
+        }
+
+        .footer {
+            background-color: var(--gray-800);
+            color: white;
+            padding: 2rem 0;
+            margin-top: 3rem;
+        }
+
+        .footer h5 {
+            font-weight: 600;
+            margin-bottom: 1.5rem;
+        }
+
+        .footer-links {
+            list-style: none;
+            padding: 0;
+        }
+
+        .footer-links li {
+            margin-bottom: 0.5rem;
+        }
+
+        .footer-links a {
+            color: var(--gray-400);
+            text-decoration: none;
+            transition: all 0.3s ease;
+        }
+
+        .footer-links a:hover {
             color: white;
         }
-        .tabcontent {
-            display: none;
-            padding: 20px;
-            border: 1px solid #ccc;
-            border-top: none;
-            border-radius: 0 0 4px 4px;
-            animation: fadeEffect 1s;
+
+        .social-icons {
+            display: flex;
+            gap: 1rem;
         }
-        @keyframes fadeEffect {
-            from {opacity: 0;}
-            to {opacity: 1;}
+
+        .social-icons a {
+            color: white;
+            background-color: rgba(255, 255, 255, 0.1);
+            width: 40px;
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+            transition: all 0.3s ease;
+        }
+
+        .social-icons a:hover {
+            background-color: var(--primary-color);
+            transform: translateY(-3px);
+        }
+
+        .copyright {
+            background-color: rgba(0, 0, 0, 0.2);
+            padding: 1rem 0;
+            margin-top: 2rem;
+        }
+
+        /* Animation */
+        .fade-in {
+            animation: fadeIn 0.5s ease-in-out;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
         }
     </style>
 </head>
 <body>
-    <h1>Custom API System</h1>
-    
-    <div class="tab">
-        <button class="tablinks active" onclick="openTab(event, 'Submit')">Submit Data</button>
-        <button class="tablinks" onclick="openTab(event, 'Retrieve')">Retrieve Data</button>
-        <button class="tablinks" onclick="openTab(event, 'Update')">Update Data</button>
-        <button class="tablinks" onclick="openTab(event, 'Delete')">Delete Data</button>
-    </div>
-    
-    <div id="Submit" class="tabcontent" style="display: block;">
-        <h2>Submit Data to API</h2>
-        <div class="container">
-            <div class="form-group">
-                <label for="dataType">Data Type:</label>
-                <select id="dataType" onchange="toggleInputFields()">
-                    <option value="text">Text</option>
-                    <option value="json">JSON</option>
-                    <option value="custom">Custom Fields</option>
-                </select>
+    <header class="bg-dark py-5">
+        <div class="container px-4 px-lg-5 my-5">
+            <div class="text-center text-white">
+                <h1 class="display-4 fw-bolder">API System</h1>
+                <p class="lead fw-normal text-white-50 mb-0">A modern API system for managing data</p>
             </div>
-            
-            <div id="textInput" class="form-group">
-                <label for="textData">Text Data:</label>
-                <textarea id="textData" rows="5" placeholder="Enter any text data..."></textarea>
+        </div>
+    </header>
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+        <div class="container px-4 px-lg-5">
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation"><span class="navbar-toggler-icon"></span></button>
+            <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                <ul class="navbar-nav me-auto mb-2 mb-lg-0 ms-lg-4">
+                    <li class="nav-item"><a class="nav-link active" aria-current="page" href="#">Home</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#">API Documentation</a></li>
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" id="navbarDropdown" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">API Endpoints</a>
+                        <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+                            <li><a class="dropdown-item" href="#">Submit Data</a></li>
+                            <li><a class="dropdown-item" href="#">Retrieve Data</a></li>
+                            <li><a class="dropdown-item" href="#">Update Data</a></li>
+                            <li><a class="dropdown-item" href="#">Delete Data</a></li>
+                        </ul>
+                    </li>
+                </ul>
+                <form class="d-flex">
+                    <button class="btn btn-outline-dark" type="submit">
+                        <i class="bi-cart-fill me-1"></i>
+                        Search
+                    </button>
+                </form>
             </div>
-            
-            <div id="jsonInput" class="form-group" style="display: none;">
-                <label for="jsonData">JSON Data:</label>
-                <textarea id="jsonData" rows="5" placeholder='{"key": "value", "example": 123}'></textarea>
-            </div>
-            
-            <div id="customInput" style="display: none;">
-                <div class="form-group">
-                    <button type="button" onclick="addCustomField()">Add Field</button>
+        </div>
+    </nav>
+    <ul class="nav nav-tabs" id="myTab" role="tablist">
+        <li class="nav-item">
+            <a class="nav-link active" id="submit-tab" data-bs-toggle="tab" href="#submit" role="tab" aria-controls="submit" aria-selected="true">Submit Data</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" id="retrieve-tab" data-bs-toggle="tab" href="#retrieve" role="tab" aria-controls="retrieve" aria-selected="false">Retrieve Data</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" id="update-tab" data-bs-toggle="tab" href="#update" role="tab" aria-controls="update" aria-selected="false">Update Data</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" id="delete-tab" data-bs-toggle="tab" href="#delete" role="tab" aria-controls="delete" aria-selected="false">Delete Data</a>
+        </li>
+    </ul>
+    <div class="tab-content" id="myTabContent">
+        <div class="tab-pane fade show active" id="submit" role="tabpanel" aria-labelledby="submit-tab">
+            <div class="container">
+                <div class="row">
+                    <div class="col-md-6">
+                        <h2>Submit Data to API</h2>
+                        <div class="form-group">
+                            <label for="dataType">Data Type:</label>
+                            <select id="dataType" class="form-control" onchange="toggleInputFields()">
+                                <option value="text">Text</option>
+                                <option value="json">JSON</option>
+                                <option value="custom">Custom Fields</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div id="textInput" class="form-group">
+                            <label for="textData">Text Data:</label>
+                            <textarea id="textData" class="form-control" rows="5" placeholder="Enter any text data..."></textarea>
+                        </div>
+                    </div>
                 </div>
-                <div id="customFields"></div>
-            </div>
-            
-            <div class="form-group">
-                <button type="button" onclick="submitData()">Submit Data</button>
-            </div>
-        </div>
-    </div>
-    
-    <div id="Retrieve" class="tabcontent">
-        <h2>Retrieve Data</h2>
-        <div class="container">
-            <div class="form-group">
-                <label for="retrieveType">Retrieve:</label>
-                <select id="retrieveType">
-                    <option value="all">All Data</option>
-                    <option value="byId">Data by ID</option>
-                </select>
-            </div>
-            
-            <div id="idRetrieveInput" class="form-group" style="display: none;">
-                <label for="retrieveId">Data ID:</label>
-                <input type="number" id="retrieveId" placeholder="Enter data ID">
-            </div>
-            
-            <div class="form-group">
-                <button type="button" onclick="retrieveData()">Retrieve Data</button>
-            </div>
-        </div>
-    </div>
-    
-    <div id="Update" class="tabcontent">
-        <h2>Update Data</h2>
-        <div class="container">
-            <div class="form-group">
-                <label for="updateId">Data ID to Update:</label>
-                <input type="number" id="updateId" placeholder="Enter data ID">
-            </div>
-            
-            <div class="form-group">
-                <label for="updateDataType">Data Type:</label>
-                <select id="updateDataType" onchange="toggleUpdateInputFields()">
-                    <option value="text">Text</option>
-                    <option value="json">JSON</option>
-                    <option value="custom">Custom Fields</option>
-                </select>
-            </div>
-            
-            <div id="updateTextInput" class="form-group">
-                <label for="updateTextData">Text Data:</label>
-                <textarea id="updateTextData" rows="5" placeholder="Enter any text data..."></textarea>
-            </div>
-            
-            <div id="updateJsonInput" class="form-group" style="display: none;">
-                <label for="updateJsonData">JSON Data:</label>
-                <textarea id="updateJsonData" rows="5" placeholder='{"key": "value", "example": 123}'></textarea>
-            </div>
-            
-            <div id="updateCustomInput" style="display: none;">
-                <div class="form-group">
-                    <button type="button" onclick="addUpdateCustomField()">Add Field</button>
+                <div class="row">
+                    <div class="col-md-6">
+                        <div id="jsonInput" class="form-group" style="display: none;">
+                            <label for="jsonData">JSON Data:</label>
+                            <textarea id="jsonData" class="form-control" rows="5" placeholder='{"key": "value", "example": 123}'></textarea>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div id="customInput" style="display: none;">
+                            <div class="form-group">
+                                <button type="button" class="btn btn-primary" onclick="addCustomField()">Add Field</button>
+                            </div>
+                            <div id="customFields"></div>
+                        </div>
+                    </div>
                 </div>
-                <div id="updateCustomFields"></div>
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="form-group">
+                            <button type="button" class="btn btn-primary" onclick="submitData()">Submit Data</button>
+                        </div>
+                    </div>
+                </div>
             </div>
-            
-            <div class="form-group">
-                <button type="button" onclick="updateData()">Update Data</button>
+        </div>
+        <div class="tab-pane fade" id="retrieve" role="tabpanel" aria-labelledby="retrieve-tab">
+            <div class="container">
+                <div class="row">
+                    <div class="col-md-6">
+                        <h2>Retrieve Data</h2>
+                        <div class="form-group">
+                            <label for="retrieveType">Retrieve:</label>
+                            <select id="retrieveType" class="form-control">
+                                <option value="all">All Data</option>
+                                <option value="byId">Data by ID</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div id="idRetrieveInput" class="form-group" style="display: none;">
+                            <label for="retrieveId">Data ID:</label>
+                            <input type="number" id="retrieveId" class="form-control" placeholder="Enter data ID">
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="form-group">
+                            <button type="button" class="btn btn-primary" onclick="retrieveData()">Retrieve Data</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="tab-pane fade" id="update" role="tabpanel" aria-labelledby="update-tab">
+            <div class="container">
+                <div class="row">
+                    <div class="col-md-6">
+                        <h2>Update Data</h2>
+                        <div class="form-group">
+                            <label for="updateId">Data ID to Update:</label>
+                            <input type="number" id="updateId" class="form-control" placeholder="Enter data ID">
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label for="updateDataType">Data Type:</label>
+                            <select id="updateDataType" class="form-control" onchange="toggleUpdateInputFields()">
+                                <option value="text">Text</option>
+                                <option value="json">JSON</option>
+                                <option value="custom">Custom Fields</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-6">
+                        <div id="updateTextInput" class="form-group">
+                            <label for="updateTextData">Text Data:</label>
+                            <textarea id="updateTextData" class="form-control" rows="5" placeholder="Enter any text data..."></textarea>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div id="updateJsonInput" class="form-group" style="display: none;">
+                            <label for="updateJsonData">JSON Data:</label>
+                            <textarea id="updateJsonData" class="form-control" rows="5" placeholder='{"key": "value", "example": 123}'></textarea>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-6">
+                        <div id="updateCustomInput" style="display: none;">
+                            <div class="form-group">
+                                <button type="button" class="btn btn-primary" onclick="addUpdateCustomField()">Add Field</button>
+                            </div>
+                            <div id="updateCustomFields"></div>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <button type="button" class="btn btn-primary" onclick="updateData()">Update Data</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="tab-pane fade" id="delete" role="tabpanel" aria-labelledby="delete-tab">
+            <div class="container">
+                <div class="row">
+                    <div class="col-md-6">
+                        <h2>Delete Data</h2>
+                        <div class="form-group">
+                            <label for="deleteId">Data ID to Delete:</label>
+                            <input type="number" id="deleteId" class="form-control" placeholder="Enter data ID">
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <button type="button" class="btn btn-primary" onclick="deleteData()">Delete Data</button>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
     
-    <div id="Delete" class="tabcontent">
-        <h2>Delete Data</h2>
+    <div class="container mt-4">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="card">
+                    <div class="card-header bg-primary text-white">
+                        <h5 class="mb-0">API Response</h5>
+                    </div>
+                    <div class="card-body">
+                        <pre id="responseDisplay" class="bg-light p-3 rounded">Response will appear here...</pre>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <footer class="py-5 bg-dark mt-5">
         <div class="container">
-            <div class="form-group">
-                <label for="deleteId">Data ID to Delete:</label>
-                <input type="number" id="deleteId" placeholder="Enter data ID">
+            <div class="row">
+                <div class="col-md-6">
+                    <h5 class="text-white">API System</h5>
+                    <p class="text-white-50">A modern RESTful API system for managing various types of data.</p>
+                </div>
+                <div class="col-md-3">
+                    <h5 class="text-white">Links</h5>
+                    <ul class="list-unstyled">
+                        <li><a href="#" class="text-white-50">Documentation</a></li>
+                        <li><a href="#" class="text-white-50">API Endpoints</a></li>
+                        <li><a href="#" class="text-white-50">Examples</a></li>
+                    </ul>
+                </div>
+                <div class="col-md-3">
+                    <h5 class="text-white">Resources</h5>
+                    <ul class="list-unstyled">
+                        <li><a href="#" class="text-white-50">GitHub</a></li>
+                        <li><a href="#" class="text-white-50">Support</a></li>
+                        <li><a href="#" class="text-white-50">Contact</a></li>
+                    </ul>
+                </div>
             </div>
-            
-            <div class="form-group">
-                <button type="button" onclick="deleteData()">Delete Data</button>
-            </div>
+            <p class="m-0 text-center text-white-50 mt-4">Copyright &copy; API System 2023</p>
         </div>
-    </div>
-    
-    <h2>Response</h2>
-    <div class="container">
-        <pre id="response">No response yet...</pre>
-    </div>
-    
+    </footer>
+
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
     <script>
-        // Tab functionality
-        function openTab(evt, tabName) {
-            var i, tabcontent, tablinks;
-            tabcontent = document.getElementsByClassName("tabcontent");
-            for (i = 0; i < tabcontent.length; i++) {
-                tabcontent[i].style.display = "none";
-            }
-            tablinks = document.getElementsByClassName("tablinks");
-            for (i = 0; i < tablinks.length; i++) {
-                tablinks[i].className = tablinks[i].className.replace(" active", "");
-            }
-            document.getElementById(tabName).style.display = "block";
-            evt.currentTarget.className += " active";
-        }
-        
-        // Toggle input fields based on data type
+        // Toggle input fields based on data type selection
         function toggleInputFields() {
-            const dataType = document.getElementById("dataType").value;
-            document.getElementById("textInput").style.display = dataType === "text" ? "block" : "none";
-            document.getElementById("jsonInput").style.display = dataType === "json" ? "block" : "none";
-            document.getElementById("customInput").style.display = dataType === "custom" ? "block" : "none";
+            const dataType = document.getElementById('dataType').value;
+            
+            document.getElementById('textInput').style.display = dataType === 'text' ? 'block' : 'none';
+            document.getElementById('jsonInput').style.display = dataType === 'json' ? 'block' : 'none';
+            document.getElementById('customInput').style.display = dataType === 'custom' ? 'block' : 'none';
         }
         
+        // Toggle update input fields based on data type selection
         function toggleUpdateInputFields() {
-            const dataType = document.getElementById("updateDataType").value;
-            document.getElementById("updateTextInput").style.display = dataType === "text" ? "block" : "none";
-            document.getElementById("updateJsonInput").style.display = dataType === "json" ? "block" : "none";
-            document.getElementById("updateCustomInput").style.display = dataType === "custom" ? "block" : "none";
+            const dataType = document.getElementById('updateDataType').value;
+            
+            document.getElementById('updateTextInput').style.display = dataType === 'text' ? 'block' : 'none';
+            document.getElementById('updateJsonInput').style.display = dataType === 'json' ? 'block' : 'none';
+            document.getElementById('updateCustomInput').style.display = dataType === 'custom' ? 'block' : 'none';
         }
         
-        // Toggle ID input for retrieve
-        document.getElementById("retrieveType").addEventListener("change", function() {
-            document.getElementById("idRetrieveInput").style.display = 
-                this.value === "byId" ? "block" : "none";
+        // Toggle retrieve by ID input field
+        document.getElementById('retrieveType').addEventListener('change', function() {
+            document.getElementById('idRetrieveInput').style.display = this.value === 'byId' ? 'block' : 'none';
         });
         
-        // Add custom field
-        let fieldCounter = 0;
+        // Add custom field for submission
+        let fieldCount = 0;
         function addCustomField() {
-            const customFields = document.getElementById("customFields");
-            const fieldId = `field-${fieldCounter}`;
+            const customFields = document.getElementById('customFields');
+            const fieldId = 'field' + fieldCount;
             
-            const fieldDiv = document.createElement("div");
-            fieldDiv.className = "form-group";
-            fieldDiv.id = fieldId;
-            
+            const fieldDiv = document.createElement('div');
+            fieldDiv.className = 'row mb-2';
             fieldDiv.innerHTML = `
-                <div style="display: flex; gap: 10px;">
-                    <div style="flex: 1;">
-                        <label for="${fieldId}-key">Field Name:</label>
-                        <input type="text" id="${fieldId}-key" placeholder="Enter field name">
-                    </div>
-                    <div style="flex: 2;">
-                        <label for="${fieldId}-value">Field Value:</label>
-                        <input type="text" id="${fieldId}-value" placeholder="Enter field value">
-                    </div>
-                    <div style="align-self: flex-end; margin-bottom: 8px;">
-                        <button type="button" onclick="removeField('${fieldId}')" style="background-color: #e74c3c;">Remove</button>
-                    </div>
+                <div class="col-md-5">
+                    <input type="text" id="${fieldId}Key" class="form-control" placeholder="Field Name">
+                </div>
+                <div class="col-md-5">
+                    <input type="text" id="${fieldId}Value" class="form-control" placeholder="Field Value">
+                </div>
+                <div class="col-md-2">
+                    <button type="button" class="btn btn-danger" onclick="removeField('${fieldId}')">Remove</button>
                 </div>
             `;
             
             customFields.appendChild(fieldDiv);
-            fieldCounter++;
+            fieldCount++;
         }
         
-        // Add update custom field
-        let updateFieldCounter = 0;
-        function addUpdateCustomField() {
-            const customFields = document.getElementById("updateCustomFields");
-            const fieldId = `update-field-${updateFieldCounter}`;
-            
-            const fieldDiv = document.createElement("div");
-            fieldDiv.className = "form-group";
-            fieldDiv.id = fieldId;
-            
-            fieldDiv.innerHTML = `
-                <div style="display: flex; gap: 10px;">
-                    <div style="flex: 1;">
-                        <label for="${fieldId}-key">Field Name:</label>
-                        <input type="text" id="${fieldId}-key" placeholder="Enter field name">
-                    </div>
-                    <div style="flex: 2;">
-                        <label for="${fieldId}-value">Field Value:</label>
-                        <input type="text" id="${fieldId}-value" placeholder="Enter field value">
-                    </div>
-                    <div style="align-self: flex-end; margin-bottom: 8px;">
-                        <button type="button" onclick="removeField('${fieldId}')" style="background-color: #e74c3c;">Remove</button>
-                    </div>
-                </div>
-            `;
-            
-            customFields.appendChild(fieldDiv);
-            updateFieldCounter++;
-        }
-        
-        // Remove field
+        // Remove custom field
         function removeField(fieldId) {
-            document.getElementById(fieldId).remove();
+            const field = document.getElementById(fieldId);
+            if (field) {
+                field.parentNode.removeChild(field);
+            }
+        }
+        
+        // Add custom field for update
+        let updateFieldCount = 0;
+        function addUpdateCustomField() {
+            const customFields = document.getElementById('updateCustomFields');
+            const fieldId = 'updateField' + updateFieldCount;
+            
+            const fieldDiv = document.createElement('div');
+            fieldDiv.className = 'row mb-2';
+            fieldDiv.innerHTML = `
+                <div class="col-md-5">
+                    <input type="text" id="${fieldId}Key" class="form-control" placeholder="Field Name">
+                </div>
+                <div class="col-md-5">
+                    <input type="text" id="${fieldId}Value" class="form-control" placeholder="Field Value">
+                </div>
+                <div class="col-md-2">
+                    <button type="button" class="btn btn-danger" onclick="removeUpdateField('${fieldId}')">Remove</button>
+                </div>
+            `;
+            
+            customFields.appendChild(fieldDiv);
+            updateFieldCount++;
+        }
+        
+        // Remove update custom field
+        function removeUpdateField(fieldId) {
+            const field = document.getElementById(fieldId);
+            if (field) {
+                field.parentNode.removeChild(field);
+            }
         }
         
         // Submit data to API
         function submitData() {
-            const dataType = document.getElementById("dataType").value;
+            const dataType = document.getElementById('dataType').value;
             let data;
             
-            if (dataType === "text") {
-                const textData = document.getElementById("textData").value;
-                data = { text: textData };
-            } else if (dataType === "json") {
+            if (dataType === 'text') {
+                data = document.getElementById('textData').value;
+            } else if (dataType === 'json') {
                 try {
-                    const jsonData = document.getElementById("jsonData").value;
-                    data = JSON.parse(jsonData);
-                } catch (error) {
-                    document.getElementById("response").textContent = `Error parsing JSON: ${error.message}`;
+                    data = JSON.parse(document.getElementById('jsonData').value);
+                } catch (e) {
+                    showResponse('Error: Invalid JSON format');
                     return;
                 }
-            } else if (dataType === "custom") {
+            } else if (dataType === 'custom') {
                 data = {};
-                const customFields = document.getElementById("customFields").children;
-                for (let i = 0; i < customFields.length; i++) {
-                    const fieldId = customFields[i].id;
-                    const key = document.getElementById(`${fieldId}-key`).value;
-                    const value = document.getElementById(`${fieldId}-value`).value;
-                    if (key) {
-                        data[key] = value;
+                for (let i = 0; i < fieldCount; i++) {
+                    const keyElement = document.getElementById('field' + i + 'Key');
+                    const valueElement = document.getElementById('field' + i + 'Value');
+                    
+                    if (keyElement && valueElement && keyElement.value) {
+                        data[keyElement.value] = valueElement.value;
                     }
                 }
             }
@@ -356,111 +638,133 @@
                 headers: {
                     'Content-Type': 'application/json'
                 },
-                body: JSON.stringify(data)
+                body: JSON.stringify({ data: data })
             })
             .then(response => response.json())
             .then(data => {
-                document.getElementById("response").textContent = JSON.stringify(data, null, 2);
+                showResponse(JSON.stringify(data, null, 2));
             })
             .catch(error => {
-                document.getElementById("response").textContent = `Error: ${error.message}`;
+                showResponse('Error: ' + error.message);
             });
         }
         
         // Retrieve data from API
         function retrieveData() {
-            const retrieveType = document.getElementById("retrieveType").value;
+            const retrieveType = document.getElementById('retrieveType').value;
             let url = '/api/data';
             
-            if (retrieveType === "byId") {
-                const id = document.getElementById("retrieveId").value;
+            if (retrieveType === 'byId') {
+                const id = document.getElementById('retrieveId').value;
                 if (!id) {
-                    document.getElementById("response").textContent = "Please enter an ID";
+                    showResponse('Error: Please enter an ID');
                     return;
                 }
-                url = `/api/data/${id}`;
+                url += '/' + id;
             }
             
             fetch(url)
             .then(response => response.json())
             .then(data => {
-                document.getElementById("response").textContent = JSON.stringify(data, null, 2);
+                showResponse(JSON.stringify(data, null, 2));
             })
             .catch(error => {
-                document.getElementById("response").textContent = `Error: ${error.message}`;
+                showResponse('Error: ' + error.message);
             });
         }
         
         // Update data in API
         function updateData() {
-            const id = document.getElementById("updateId").value;
+            const id = document.getElementById('updateId').value;
             if (!id) {
-                document.getElementById("response").textContent = "Please enter an ID";
+                showResponse('Error: Please enter an ID');
                 return;
             }
             
-            const dataType = document.getElementById("updateDataType").value;
+            const dataType = document.getElementById('updateDataType').value;
             let data;
             
-            if (dataType === "text") {
-                const textData = document.getElementById("updateTextData").value;
-                data = { text: textData };
-            } else if (dataType === "json") {
+            if (dataType === 'text') {
+                data = document.getElementById('updateTextData').value;
+            } else if (dataType === 'json') {
                 try {
-                    const jsonData = document.getElementById("updateJsonData").value;
-                    data = JSON.parse(jsonData);
-                } catch (error) {
-                    document.getElementById("response").textContent = `Error parsing JSON: ${error.message}`;
+                    data = JSON.parse(document.getElementById('updateJsonData').value);
+                } catch (e) {
+                    showResponse('Error: Invalid JSON format');
                     return;
                 }
-            } else if (dataType === "custom") {
+            } else if (dataType === 'custom') {
                 data = {};
-                const customFields = document.getElementById("updateCustomFields").children;
-                for (let i = 0; i < customFields.length; i++) {
-                    const fieldId = customFields[i].id;
-                    const key = document.getElementById(`${fieldId}-key`).value;
-                    const value = document.getElementById(`${fieldId}-value`).value;
-                    if (key) {
-                        data[key] = value;
+                for (let i = 0; i < updateFieldCount; i++) {
+                    const keyElement = document.getElementById('updateField' + i + 'Key');
+                    const valueElement = document.getElementById('updateField' + i + 'Value');
+                    
+                    if (keyElement && valueElement && keyElement.value) {
+                        data[keyElement.value] = valueElement.value;
                     }
                 }
             }
             
-            fetch(`/api/data/${id}`, {
+            fetch('/api/data/' + id, {
                 method: 'PUT',
                 headers: {
                     'Content-Type': 'application/json'
                 },
-                body: JSON.stringify(data)
+                body: JSON.stringify({ data: data })
             })
             .then(response => response.json())
             .then(data => {
-                document.getElementById("response").textContent = JSON.stringify(data, null, 2);
+                showResponse(JSON.stringify(data, null, 2));
             })
             .catch(error => {
-                document.getElementById("response").textContent = `Error: ${error.message}`;
+                showResponse('Error: ' + error.message);
             });
         }
         
         // Delete data from API
         function deleteData() {
-            const id = document.getElementById("deleteId").value;
+            const id = document.getElementById('deleteId').value;
             if (!id) {
-                document.getElementById("response").textContent = "Please enter an ID";
+                showResponse('Error: Please enter an ID');
                 return;
             }
             
-            fetch(`/api/data/${id}`, {
+            fetch('/api/data/' + id, {
                 method: 'DELETE'
             })
             .then(response => response.json())
             .then(data => {
-                document.getElementById("response").textContent = JSON.stringify(data, null, 2);
+                showResponse(JSON.stringify(data, null, 2));
             })
             .catch(error => {
-                document.getElementById("response").textContent = `Error: ${error.message}`;
+                showResponse('Error: ' + error.message);
             });
         }
+        
+        // Show response in the response display area
+        function showResponse(response) {
+            document.getElementById('responseDisplay').textContent = response;
+        }
+
+        // Add animation effects
+        document.addEventListener('DOMContentLoaded', function() {
+            // Add fade-in effect to cards
+            const cards = document.querySelectorAll('.card');
+            cards.forEach(card => {
+                card.classList.add('animate__animated', 'animate__fadeIn');
+            });
+            
+            // Add hover effects to buttons
+            const buttons = document.querySelectorAll('.btn');
+            buttons.forEach(button => {
+                button.addEventListener('mouseover', function() {
+                    this.classList.add('shadow-sm');
+                });
+                button.addEventListener('mouseout', function() {
+                    this.classList.remove('shadow-sm');
+                });
+            });
+        });
     </script>
 </body>
 </html>
