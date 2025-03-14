@@ -1,0 +1,466 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Custom API System</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            color: #333;
+        }
+        h1, h2 {
+            color: #2c3e50;
+        }
+        .container {
+            background-color: #f9f9f9;
+            border-radius: 5px;
+            padding: 20px;
+            margin-bottom: 20px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        .form-group {
+            margin-bottom: 15px;
+        }
+        label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+        }
+        input, textarea, select {
+            width: 100%;
+            padding: 8px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            box-sizing: border-box;
+        }
+        button {
+            background-color: #3498db;
+            color: white;
+            border: none;
+            padding: 10px 15px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+        button:hover {
+            background-color: #2980b9;
+        }
+        #response {
+            background-color: #f0f0f0;
+            padding: 15px;
+            border-radius: 4px;
+            white-space: pre-wrap;
+            overflow-x: auto;
+        }
+        .tab {
+            overflow: hidden;
+            border: 1px solid #ccc;
+            background-color: #f1f1f1;
+            border-radius: 4px 4px 0 0;
+        }
+        .tab button {
+            background-color: inherit;
+            float: left;
+            border: none;
+            outline: none;
+            cursor: pointer;
+            padding: 14px 16px;
+            transition: 0.3s;
+            color: #333;
+        }
+        .tab button:hover {
+            background-color: #ddd;
+        }
+        .tab button.active {
+            background-color: #3498db;
+            color: white;
+        }
+        .tabcontent {
+            display: none;
+            padding: 20px;
+            border: 1px solid #ccc;
+            border-top: none;
+            border-radius: 0 0 4px 4px;
+            animation: fadeEffect 1s;
+        }
+        @keyframes fadeEffect {
+            from {opacity: 0;}
+            to {opacity: 1;}
+        }
+    </style>
+</head>
+<body>
+    <h1>Custom API System</h1>
+    
+    <div class="tab">
+        <button class="tablinks active" onclick="openTab(event, 'Submit')">Submit Data</button>
+        <button class="tablinks" onclick="openTab(event, 'Retrieve')">Retrieve Data</button>
+        <button class="tablinks" onclick="openTab(event, 'Update')">Update Data</button>
+        <button class="tablinks" onclick="openTab(event, 'Delete')">Delete Data</button>
+    </div>
+    
+    <div id="Submit" class="tabcontent" style="display: block;">
+        <h2>Submit Data to API</h2>
+        <div class="container">
+            <div class="form-group">
+                <label for="dataType">Data Type:</label>
+                <select id="dataType" onchange="toggleInputFields()">
+                    <option value="text">Text</option>
+                    <option value="json">JSON</option>
+                    <option value="custom">Custom Fields</option>
+                </select>
+            </div>
+            
+            <div id="textInput" class="form-group">
+                <label for="textData">Text Data:</label>
+                <textarea id="textData" rows="5" placeholder="Enter any text data..."></textarea>
+            </div>
+            
+            <div id="jsonInput" class="form-group" style="display: none;">
+                <label for="jsonData">JSON Data:</label>
+                <textarea id="jsonData" rows="5" placeholder='{"key": "value", "example": 123}'></textarea>
+            </div>
+            
+            <div id="customInput" style="display: none;">
+                <div class="form-group">
+                    <button type="button" onclick="addCustomField()">Add Field</button>
+                </div>
+                <div id="customFields"></div>
+            </div>
+            
+            <div class="form-group">
+                <button type="button" onclick="submitData()">Submit Data</button>
+            </div>
+        </div>
+    </div>
+    
+    <div id="Retrieve" class="tabcontent">
+        <h2>Retrieve Data</h2>
+        <div class="container">
+            <div class="form-group">
+                <label for="retrieveType">Retrieve:</label>
+                <select id="retrieveType">
+                    <option value="all">All Data</option>
+                    <option value="byId">Data by ID</option>
+                </select>
+            </div>
+            
+            <div id="idRetrieveInput" class="form-group" style="display: none;">
+                <label for="retrieveId">Data ID:</label>
+                <input type="number" id="retrieveId" placeholder="Enter data ID">
+            </div>
+            
+            <div class="form-group">
+                <button type="button" onclick="retrieveData()">Retrieve Data</button>
+            </div>
+        </div>
+    </div>
+    
+    <div id="Update" class="tabcontent">
+        <h2>Update Data</h2>
+        <div class="container">
+            <div class="form-group">
+                <label for="updateId">Data ID to Update:</label>
+                <input type="number" id="updateId" placeholder="Enter data ID">
+            </div>
+            
+            <div class="form-group">
+                <label for="updateDataType">Data Type:</label>
+                <select id="updateDataType" onchange="toggleUpdateInputFields()">
+                    <option value="text">Text</option>
+                    <option value="json">JSON</option>
+                    <option value="custom">Custom Fields</option>
+                </select>
+            </div>
+            
+            <div id="updateTextInput" class="form-group">
+                <label for="updateTextData">Text Data:</label>
+                <textarea id="updateTextData" rows="5" placeholder="Enter any text data..."></textarea>
+            </div>
+            
+            <div id="updateJsonInput" class="form-group" style="display: none;">
+                <label for="updateJsonData">JSON Data:</label>
+                <textarea id="updateJsonData" rows="5" placeholder='{"key": "value", "example": 123}'></textarea>
+            </div>
+            
+            <div id="updateCustomInput" style="display: none;">
+                <div class="form-group">
+                    <button type="button" onclick="addUpdateCustomField()">Add Field</button>
+                </div>
+                <div id="updateCustomFields"></div>
+            </div>
+            
+            <div class="form-group">
+                <button type="button" onclick="updateData()">Update Data</button>
+            </div>
+        </div>
+    </div>
+    
+    <div id="Delete" class="tabcontent">
+        <h2>Delete Data</h2>
+        <div class="container">
+            <div class="form-group">
+                <label for="deleteId">Data ID to Delete:</label>
+                <input type="number" id="deleteId" placeholder="Enter data ID">
+            </div>
+            
+            <div class="form-group">
+                <button type="button" onclick="deleteData()">Delete Data</button>
+            </div>
+        </div>
+    </div>
+    
+    <h2>Response</h2>
+    <div class="container">
+        <pre id="response">No response yet...</pre>
+    </div>
+    
+    <script>
+        // Tab functionality
+        function openTab(evt, tabName) {
+            var i, tabcontent, tablinks;
+            tabcontent = document.getElementsByClassName("tabcontent");
+            for (i = 0; i < tabcontent.length; i++) {
+                tabcontent[i].style.display = "none";
+            }
+            tablinks = document.getElementsByClassName("tablinks");
+            for (i = 0; i < tablinks.length; i++) {
+                tablinks[i].className = tablinks[i].className.replace(" active", "");
+            }
+            document.getElementById(tabName).style.display = "block";
+            evt.currentTarget.className += " active";
+        }
+        
+        // Toggle input fields based on data type
+        function toggleInputFields() {
+            const dataType = document.getElementById("dataType").value;
+            document.getElementById("textInput").style.display = dataType === "text" ? "block" : "none";
+            document.getElementById("jsonInput").style.display = dataType === "json" ? "block" : "none";
+            document.getElementById("customInput").style.display = dataType === "custom" ? "block" : "none";
+        }
+        
+        function toggleUpdateInputFields() {
+            const dataType = document.getElementById("updateDataType").value;
+            document.getElementById("updateTextInput").style.display = dataType === "text" ? "block" : "none";
+            document.getElementById("updateJsonInput").style.display = dataType === "json" ? "block" : "none";
+            document.getElementById("updateCustomInput").style.display = dataType === "custom" ? "block" : "none";
+        }
+        
+        // Toggle ID input for retrieve
+        document.getElementById("retrieveType").addEventListener("change", function() {
+            document.getElementById("idRetrieveInput").style.display = 
+                this.value === "byId" ? "block" : "none";
+        });
+        
+        // Add custom field
+        let fieldCounter = 0;
+        function addCustomField() {
+            const customFields = document.getElementById("customFields");
+            const fieldId = `field-${fieldCounter}`;
+            
+            const fieldDiv = document.createElement("div");
+            fieldDiv.className = "form-group";
+            fieldDiv.id = fieldId;
+            
+            fieldDiv.innerHTML = `
+                <div style="display: flex; gap: 10px;">
+                    <div style="flex: 1;">
+                        <label for="${fieldId}-key">Field Name:</label>
+                        <input type="text" id="${fieldId}-key" placeholder="Enter field name">
+                    </div>
+                    <div style="flex: 2;">
+                        <label for="${fieldId}-value">Field Value:</label>
+                        <input type="text" id="${fieldId}-value" placeholder="Enter field value">
+                    </div>
+                    <div style="align-self: flex-end; margin-bottom: 8px;">
+                        <button type="button" onclick="removeField('${fieldId}')" style="background-color: #e74c3c;">Remove</button>
+                    </div>
+                </div>
+            `;
+            
+            customFields.appendChild(fieldDiv);
+            fieldCounter++;
+        }
+        
+        // Add update custom field
+        let updateFieldCounter = 0;
+        function addUpdateCustomField() {
+            const customFields = document.getElementById("updateCustomFields");
+            const fieldId = `update-field-${updateFieldCounter}`;
+            
+            const fieldDiv = document.createElement("div");
+            fieldDiv.className = "form-group";
+            fieldDiv.id = fieldId;
+            
+            fieldDiv.innerHTML = `
+                <div style="display: flex; gap: 10px;">
+                    <div style="flex: 1;">
+                        <label for="${fieldId}-key">Field Name:</label>
+                        <input type="text" id="${fieldId}-key" placeholder="Enter field name">
+                    </div>
+                    <div style="flex: 2;">
+                        <label for="${fieldId}-value">Field Value:</label>
+                        <input type="text" id="${fieldId}-value" placeholder="Enter field value">
+                    </div>
+                    <div style="align-self: flex-end; margin-bottom: 8px;">
+                        <button type="button" onclick="removeField('${fieldId}')" style="background-color: #e74c3c;">Remove</button>
+                    </div>
+                </div>
+            `;
+            
+            customFields.appendChild(fieldDiv);
+            updateFieldCounter++;
+        }
+        
+        // Remove field
+        function removeField(fieldId) {
+            document.getElementById(fieldId).remove();
+        }
+        
+        // Submit data to API
+        function submitData() {
+            const dataType = document.getElementById("dataType").value;
+            let data;
+            
+            if (dataType === "text") {
+                const textData = document.getElementById("textData").value;
+                data = { text: textData };
+            } else if (dataType === "json") {
+                try {
+                    const jsonData = document.getElementById("jsonData").value;
+                    data = JSON.parse(jsonData);
+                } catch (error) {
+                    document.getElementById("response").textContent = `Error parsing JSON: ${error.message}`;
+                    return;
+                }
+            } else if (dataType === "custom") {
+                data = {};
+                const customFields = document.getElementById("customFields").children;
+                for (let i = 0; i < customFields.length; i++) {
+                    const fieldId = customFields[i].id;
+                    const key = document.getElementById(`${fieldId}-key`).value;
+                    const value = document.getElementById(`${fieldId}-value`).value;
+                    if (key) {
+                        data[key] = value;
+                    }
+                }
+            }
+            
+            fetch('/api/data', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(data)
+            })
+            .then(response => response.json())
+            .then(data => {
+                document.getElementById("response").textContent = JSON.stringify(data, null, 2);
+            })
+            .catch(error => {
+                document.getElementById("response").textContent = `Error: ${error.message}`;
+            });
+        }
+        
+        // Retrieve data from API
+        function retrieveData() {
+            const retrieveType = document.getElementById("retrieveType").value;
+            let url = '/api/data';
+            
+            if (retrieveType === "byId") {
+                const id = document.getElementById("retrieveId").value;
+                if (!id) {
+                    document.getElementById("response").textContent = "Please enter an ID";
+                    return;
+                }
+                url = `/api/data/${id}`;
+            }
+            
+            fetch(url)
+            .then(response => response.json())
+            .then(data => {
+                document.getElementById("response").textContent = JSON.stringify(data, null, 2);
+            })
+            .catch(error => {
+                document.getElementById("response").textContent = `Error: ${error.message}`;
+            });
+        }
+        
+        // Update data in API
+        function updateData() {
+            const id = document.getElementById("updateId").value;
+            if (!id) {
+                document.getElementById("response").textContent = "Please enter an ID";
+                return;
+            }
+            
+            const dataType = document.getElementById("updateDataType").value;
+            let data;
+            
+            if (dataType === "text") {
+                const textData = document.getElementById("updateTextData").value;
+                data = { text: textData };
+            } else if (dataType === "json") {
+                try {
+                    const jsonData = document.getElementById("updateJsonData").value;
+                    data = JSON.parse(jsonData);
+                } catch (error) {
+                    document.getElementById("response").textContent = `Error parsing JSON: ${error.message}`;
+                    return;
+                }
+            } else if (dataType === "custom") {
+                data = {};
+                const customFields = document.getElementById("updateCustomFields").children;
+                for (let i = 0; i < customFields.length; i++) {
+                    const fieldId = customFields[i].id;
+                    const key = document.getElementById(`${fieldId}-key`).value;
+                    const value = document.getElementById(`${fieldId}-value`).value;
+                    if (key) {
+                        data[key] = value;
+                    }
+                }
+            }
+            
+            fetch(`/api/data/${id}`, {
+                method: 'PUT',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(data)
+            })
+            .then(response => response.json())
+            .then(data => {
+                document.getElementById("response").textContent = JSON.stringify(data, null, 2);
+            })
+            .catch(error => {
+                document.getElementById("response").textContent = `Error: ${error.message}`;
+            });
+        }
+        
+        // Delete data from API
+        function deleteData() {
+            const id = document.getElementById("deleteId").value;
+            if (!id) {
+                document.getElementById("response").textContent = "Please enter an ID";
+                return;
+            }
+            
+            fetch(`/api/data/${id}`, {
+                method: 'DELETE'
+            })
+            .then(response => response.json())
+            .then(data => {
+                document.getElementById("response").textContent = JSON.stringify(data, null, 2);
+            })
+            .catch(error => {
+                document.getElementById("response").textContent = `Error: ${error.message}`;
+            });
+        }
+    </script>
+</body>
+</html>
